@@ -32,8 +32,8 @@ const getData = () => {
     data.forEach((row, index) => {
       // si data contient une propriété object du même type
       if (row.object === item.fields.gc_obo_type_c) {
+        // récupère l'année uniquement (donnée sous la forme : "2019-08-27T10:17:58+02:00")
         date = item.fields.date.split("-")[0];
-        console.log(date);
         // si count de data contient la propriété liée à l'année
         if (row.count.hasOwnProperty(date)) {
           row.count[date] += 1;
@@ -53,7 +53,6 @@ const getData = () => {
 };
 
 const data = getData();
-console.log(data, "data");
 
 const getLabels = () => {
   let labels = []; // Les années
@@ -62,7 +61,6 @@ const getLabels = () => {
   )
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       data.facet_groups[0].facets.map((item) => {
         labels.push(item.name);
       });
@@ -71,8 +69,6 @@ const getLabels = () => {
 };
 
 const labels = await getLabels();
-
-console.log(labels);
 
 const datasets = {
   labels: labels,
@@ -91,7 +87,10 @@ const chartParams = {
   data: datasets,
 };
 
-console.log(chartParams, " params");
-
 const ctx = document.getElementById("myChart").getContext("2d");
 const myChart = new Chart(ctx, chartParams);
+
+// Update le chart pour le faire apparaître une fois que les données sont récupérés
+setTimeout(function () {
+  myChart.update();
+}, 2000);
