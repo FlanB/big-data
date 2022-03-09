@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "glob": "^7.1.6",
+    "sass": "^1.49.9",
     "vite": "^2.1.3"
   }
 }
