@@ -1,26 +1,20 @@
 function DrawChart(data)
 {
-    {
-        const canvas = document.getElementById("chart");
-        document.body.removeChild(canvas);
-        document.body.innerHTML += "<canvas id='chart'></canvas>";
-    }
-    const canvas = document.getElementById("chart");
-    const ctx = canvas.getContext('2d');
+    const ctx = document.getElementById("chart").getContext('2d');
     
     const set = {
         labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
         datasets: [{
-            label: "Objets trouvés",
+            label: "Objets redistribués",
             data: data,
             fill: false,
-            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgb(75, 192, 192)',
             tension: 0.1
         }]
     };
 
     const chart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: set
     });
 }
@@ -46,6 +40,7 @@ function FetchData(city, year, callback)
         for (let i = 0; i < data.records.length; i++)
         {
             const record = data.records[i].fields;
+
             if(typeof record.gc_obo_date_heure_restitution_c === 'undefined') // si obj n'a pas été rendus
             {
                 let date_perte = new Date(record.date);
@@ -53,19 +48,22 @@ function FetchData(city, year, callback)
                 if(IsSpentOneMonth(date_perte)) // si obj a été perdue il y a plus d'un mois
                 {
                     objets_par_mois[date_perte.getMonth()]++;
-                }
 
-                debug_list.push({
-                    nom_gare: record.gc_obo_gare_origine_r_name,
-                    date_perte: record.date,
-                    nature_obj: record.gc_obo_nature_c
-                });
+                    // for debugging
+                    if(debug_list.length < 1000){
+                        debug_list.push({
+                            nom_gare: record.gc_obo_gare_origine_r_name,
+                            date_perte: record.date,
+                            nature_obj: record.gc_obo_nature_c
+                        });
+                    }
+                }
             }
         }
 
         callback(objets_par_mois);
 
-        console.log(debug_list);
+        // console.log(debug_list);
         console.log("Query end!");
     })
     .catch(error => console.log(error));
@@ -74,6 +72,27 @@ function FetchData(city, year, callback)
 const citySelect = document.getElementById("city-select");
 const yearSelect = document.getElementById("year-select");
 
+function createElem(tag, id, parent)
+{
+    const elem = document.createElement(tag);
+    elem.id = id;
+
+    if(parent)
+        parent.appendChild(elem);
+
+    return elem;
+}
+
+function removeElem(elem)
+{
+    if(elem != null)
+        elem.parentNode.removeChild(elem);
+}
+
 document.getElementById("start-btn").addEventListener("click", () => {
+    // Create a new canvas for next graph
+    removeElem(document.getElementById("chart"));
+    createElem("canvas", "chart", document.body);
+
     FetchData(citySelect.value, yearSelect.value, (data) => DrawChart(data));
 });
