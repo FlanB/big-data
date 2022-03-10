@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="./assets/img/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./assets/styles/style.scss" />
-  <title>Vite App</title>
+  <title>Gaby</title>
+  <link rel="stylesheet" href="./assets/styles/gaby.scss" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<h1>This is gaby page!</h1>
-<script type="module" src="./assets/scripts/gaby.js"></script>
+  <h1>Quelles sont les périodes de l’années où la SNCF redonne le plus d’objets aux associations ?</h1>
+  <select name="cities" id="city-select">
+    <option value="Paris+Gare+de+Lyon">Paris Gare de Lyon</option>
+    <option value="Paris+Montparnasse">Paris Montparnasse</option>
+    <option value="Paris+Saint+Lazare">Paris Saint Lazare</option>
+    <option value="Paris+Gare+du+Nord">Paris Gare du Nord</option>
+    <option value="Paris+Gare+du+Nord">Paris Gare du Nord</option>
+    <option value="Bordeaux+Saint-Jean">Bordeaux Saint-Jean</option>
+    <option value="Rennes">Rennes</option>
+    <option value="Lille+Europe">Lille</option>
+    <option value="Starsbourg">Starsbourg</option>
+    <option value="Nantes">Nantes</option>
+  </select>
+  <select name="years" id="year-select">
+    <option value="2022">2022</option>
+    <option value="2021">2021</option>
+    <option value="2020">2020</option>
+    <option value="2019">2019</option>
+    <option value="2018">2018</option>
+  </select>
+  <button id="start-btn">Rechercher</button>
+
+  <canvas id="chart"></canvas>
+
+  <script type="module" src="./assets/scripts/gaby.js"></script>
 </body>
 </html>
