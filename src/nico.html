@@ -9,8 +9,47 @@
     <title>Vite App</title>
   </head>
   <body>
-    <h1>This is nico page!</h1>
-    <canvas id="myChart" width="400" height="400"></canvas>
+    <div class="container">
+      <div class="chart">
+        <h1>Graphique du nombre d'objets perdus en fonction du temps</h1>
+        <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
+      <hr />
+      <div class="article">
+        <h1>L’influence des périodes sur les objets perdus en gare SNCF</h1>
+        <p>
+          Afin d’avoir des données plus régulière, cohérente et sur toutes les
+          années (2014 à 2022), les chiffres proposés sont uniquement récupérés
+          depuis la gare d’Agen.<br /><br />Premièrement, on peut voir, en ne
+          nous référant pas à l’année des objets perdus, une véritable césure
+          entre les objets les plus perdus (bagagerie, appareils électronique,
+          papiers personnels, portemonnaie et vêtements) et les autres, les
+          moins perdus. Qu’est ce que cela peut signifier ?<br /><br />Ce sont
+          les objets avec lesquelles on est le plus amené à manipuler qui sont
+          le plus souvent perdus (avec, bien entendu, les bagages en tête des
+          objets perdus).
+        </p>
+        <h2>2015, une hausse temporaire</h2>
+        <p>
+          On voit une réelle hausse des objets perdus en 2015. Cela peut
+          s’expliquer par l'ouverture d'une filiale à Shanghai et le
+          renforcement des positions du site en Australie et en
+          Nouvelle-Zélande. L’interface du site SNCF a aussi été repensée.<br /><br />En
+          2018, on remarque un réel déclin des objets perdus, notamment à cause
+          des grèves des cheminots que connaît Agen.<br /><br />En 2019, tout le
+          monde s’en rappelle, c’est le début de la pandémie mondiale, donc les
+          chiffres peinent à remonter. Ce n’est qu’à partir de 2021 que les
+          objets perdus se mettent à augmenter fortement, dû à la retombée de la
+          crise sanitaire.<br />Un graphique avec comme paramètre le temps,
+          cette fois-ci en semaines ou en mois, pourrait être intéressant afin
+          de voir l’influence des vacances et des saisons sur le nombre d’objets
+          perdus, et donc indirectement sur l’affluence.<br />
+          Finalement, tous les chiffres suivent la même tendance, et les années
+          ne changent pas réellement la proportion d’objets perdus suivant leur
+          type.
+        </p>
+      </div>
+    </div>
     <script type="module" src="./assets/scripts/nico.js"></script>
   </body>
 </html>

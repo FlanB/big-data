@@ -43,7 +43,7 @@ const getData = () => {
           isInData = true;
         }
       }
-      // si
+      // si la donnée n'est pas dans data, l'ajoute dans data
       if (!isInData && index === data.length - 1) {
         data.push({ object: item.fields.gc_obo_type_c, count: { date: 1 } });
       }
