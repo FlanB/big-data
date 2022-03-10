@@ -6,8 +6,12 @@ fetch(data).then(res => res.json()).then(res => {
     console.log(res)
     let labels = res.facet_groups[1].facets.map(item => item.name)
     let data = res.facet_groups[1].facets.map(item => item.count)
+    let natureLabels = res.facet_groups[2].facets.map(item => item.name)
+    let natureData = res.facet_groups[2].facets.map(item => item.count)
+    let recoveredItems = res.records.filter(item => item.fields.gc_obo_date_heure_restitution_c != null)
+    console.log([res.records.length, recoveredItems.length])
 
-    let chart = new Chart(ctx, {
+    const chart = new Chart(ctx, {
         type: "bar", data: {
             labels: labels, datasets: [{
                 label: "Nombre d'objets trouvés",
@@ -20,10 +24,11 @@ fetch(data).then(res => res.json()).then(res => {
             onClick: (e, index) => {
                 if (index.length) {
                     index = index[0].index
+                    chart.data.labels = natureLabels
+                    console.log(chart.data.datasets[0].data = natureData)
+                    chart.update()
                     res.records.forEach(item => {
                         if (item.fields.gc_obo_type_c === res.facet_groups[1].facets[index].name) {
-                             let nature = res.facet_groups[2].facets.map(item => item.name)
-                            console.log(nature)
                         }
                     })
                 }
