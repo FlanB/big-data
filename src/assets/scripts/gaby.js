@@ -5,7 +5,7 @@ function DrawChart(data)
     const set = {
         labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
         datasets: [{
-            label: "Objets trouvés",
+            label: "Objets redistribués",
             data: data,
             fill: false,
             backgroundColor: 'rgb(75, 192, 192)',
