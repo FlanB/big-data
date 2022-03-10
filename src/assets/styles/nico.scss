@@ -1,0 +1,23 @@
+body {
+  padding: 0 2%;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 2%;
+  h1 {
+    text-align: center;
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  .chart {
+    min-width: 50vw;
+    max-height: 75vh;
+  }
+  p {
+    margin: 3% 0;
+  }
+}
