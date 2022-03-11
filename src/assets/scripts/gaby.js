@@ -1,6 +1,8 @@
+import Chart from 'chart.js/auto';
+
 function DrawChart(data)
 {
-    const ctx = document.getElementById("chart").getContext('2d');
+    const ctx = document.getElementById("chart-gaby").getContext('2d');
     
     const set = {
         labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
@@ -28,7 +30,6 @@ function IsSpentOneMonth(date)
 
 function FetchData(city, year, callback)
 {
-    console.log("Starting research!");
     const endpoint = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&lang=fr&rows=10000&sort=date&refine.date=" + year + "&refine.gc_obo_gare_origine_r_name=" + city;
     
     fetch(endpoint).then(response => response.text())
@@ -62,15 +63,13 @@ function FetchData(city, year, callback)
         }
 
         callback(objets_par_mois);
-
         // console.log(debug_list);
-        console.log("Query end!");
     })
     .catch(error => console.log(error));
 }
 
-const citySelect = document.getElementById("city-select");
-const yearSelect = document.getElementById("year-select");
+const citySelect = document.getElementById("city-select-gaby");
+const yearSelect = document.getElementById("year-select-gaby");
 
 function createElem(tag, id, parent)
 {
@@ -91,8 +90,8 @@ function removeElem(elem)
 
 document.getElementById("start-btn").addEventListener("click", () => {
     // Create a new canvas for next graph
-    removeElem(document.getElementById("chart"));
-    createElem("canvas", "chart", document.body);
+    removeElem(document.getElementById("chart-gaby"));
+    createElem("canvas", "chart-gaby", document.querySelector("div#gaby-canvas-container"));
 
     FetchData(citySelect.value, yearSelect.value, (data) => DrawChart(data));
 });

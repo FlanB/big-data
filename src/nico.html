@@ -9,10 +9,16 @@
     <title>Vite App</title>
   </head>
   <body>
-    <div class="container">
-      <div class="chart">
+    <div class="container" id="container">
+      <div class="chart" id="chart">
         <h1>Graphique du nombre d'objets perdus en fonction du temps</h1>
-        <canvas id="myChart" width="400" height="400"></canvas>
+        <p>Si le graphe ne se charge pas, appuyer sur le bouton "Changer"</p>
+        <label for="charts">Type de graphique :</label>
+        <select name="charts" id="charts-select">
+          <option value="line" selected>Lignes</option>
+          <option value="bar">Barres</option>
+        </select>
+        <button id="change-chart">Changer</button>
       </div>
       <hr />
       <div class="article">
