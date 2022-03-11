@@ -45,15 +45,17 @@ const getData = () => {
   json.forEach((item) => {
     isInData = false;
     data.forEach((row, index) => {
-      // si data contient une propriété object du même type
+      // si data contient une propriété object de même valeur
       if (row.object === item.fields.gc_obo_type_c) {
         // récupère l'année uniquement (donnée sous la forme : "2019-08-27T10:17:58+02:00")
+        // transforme la date pour récupérer uniquement l'année
         date = item.fields.date.split("-")[0];
         // si count de data contient la propriété liée à l'année
         if (row.count.hasOwnProperty(date)) {
           row.count[date] += 1;
           isInData = true;
         } else {
+          // sinon l'ajoute manuellement et lui attribut 1
           data[index].count[date] = 1;
           isInData = true;
         }
@@ -68,9 +70,12 @@ const getData = () => {
 };
 
 const labels = getLabels();
+// récupère les années
 const data = await getData();
+// récupère les data
 console.log(data);
 
+// associe les labels et data pour ChartJS
 const datasets = {
   labels: labels,
   datasets: data.map((item) => {
@@ -84,6 +89,7 @@ const datasets = {
 };
 
 const createChart = (data, type) => {
+  // crée un graphique
   const chartContainer = document.getElementById("chart");
   const ctx = document.createElement("canvas");
   ctx.id = "myChart";
@@ -100,6 +106,7 @@ const createChart = (data, type) => {
 const MyChart = await createChart(datasets, "line");
 
 const removeChart = () => {
+  // enlève le graphique
   const chart = document.getElementById("myChart");
   const chartContainer = document.getElementById("chart");
   chartContainer.removeChild(chart);
@@ -108,12 +115,14 @@ const removeChart = () => {
 const changeChartBtn = document.getElementById("change-chart");
 
 function changeChart(chartSelect) {
+  // change le graphique en fonction de la valeur du select
   console.log(chartSelect.value);
   removeChart();
   createChart(datasets, chartSelect.value);
 }
 
 changeChartBtn.addEventListener("click", () => {
+  // change le graphique au click
   const chartSelect = document.getElementById("charts-select");
   changeChart(chartSelect);
 });
