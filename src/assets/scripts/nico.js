@@ -3,8 +3,9 @@ Chart.register(...registerables);
 import json from "../data/objets-trouves-restitution-nicolas.json";
 import randomColor from "./utils/randomColor";
 
+// Récupérer les années pour les mettre en abscisses sur le chart
 const getLabels = () => {
-  let labels = []; // Récupérer les années pour les mettre en abscisses sur le chart
+  let labels = [];
   fetch(
     "https://data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&lang=fr&rows=2000&sort=gc_obo_type_c&facet=date&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_gare_origine_r_name&facet=gc_obo_nature_c&facet=gc_obo_type_c&facet=gc_obo_nom_recordtype_sc_c&refine.gc_obo_gare_origine_r_name=Agen"
   )
@@ -96,7 +97,7 @@ const createChart = (data, type) => {
   return MyChart;
 };
 
-const MyChart = createChart(datasets, "line");
+const MyChart = await createChart(datasets, "line");
 
 const removeChart = () => {
   const chart = document.getElementById("myChart");
@@ -120,4 +121,4 @@ changeChartBtn.addEventListener("click", () => {
 // Update le chart pour le faire apparaître une fois que les données sont récupérés
 setTimeout(function () {
   MyChart.update();
-}, 2000);
+}, 3000);
