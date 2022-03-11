@@ -1,4 +1,4 @@
-# vite-multipage-configuration (vanilla js)
+# vite
 Install dependencies:
 ```
 npm install
@@ -6,7 +6,7 @@ npm install
 
 Run in Dev:
 ```
-npm run dev
+npm start
 ```
 
 Build:

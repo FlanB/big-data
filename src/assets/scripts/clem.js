@@ -1,15 +1,16 @@
-let data = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&sort=gc_obo_type_c&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_type_c&facet=gc_obo_nature_c"
+let data = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=10000&sort=gc_obo_type_c&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_type_c&facet=gc_obo_nature_c"
 
 const ctx = document.getElementById("myChart").getContext("2d")
+const ctx2 = document.getElementById("myChart2").getContext("2d")
 
 fetch(data).then(res => res.json()).then(res => {
     console.log(res)
+    let zoom = false
     let labels = res.facet_groups[1].facets.map(item => item.name)
     let data = res.facet_groups[1].facets.map(item => item.count)
     let natureLabels = res.facet_groups[2].facets.map(item => item.name)
     let natureData = res.facet_groups[2].facets.map(item => item.count)
     let recoveredItems = res.records.filter(item => item.fields.gc_obo_date_heure_restitution_c != null)
-    console.log([res.records.length, recoveredItems.length])
 
     const chart = new Chart(ctx, {
         type: "bar", data: {
@@ -23,16 +24,40 @@ fetch(data).then(res => res.json()).then(res => {
         }, options: {
             onClick: (e, index) => {
                 if (index.length) {
+                    if (zoom) {
+                        chart.data.labels = labels
+                        chart.data.datasets[0].data = data
+                        chart.update()
+                    } else {
+                        chart.data.labels = natureLabels
+                        chart.data.datasets[0].data = natureData
+                        chart.update()
+                    }
                     index = index[0].index
-                    chart.data.labels = natureLabels
-                    console.log(chart.data.datasets[0].data = natureData)
-                    chart.update()
                     res.records.forEach(item => {
                         if (item.fields.gc_obo_type_c === res.facet_groups[1].facets[index].name) {
                         }
                     })
+                    zoom = !zoom
                 }
             }, scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    })
+    new Chart(ctx2, {
+        type: "bar", data: {
+            labels: ["Objets perdus", "Objets retrouvés"], datasets: [{
+                label: "Nombre d'objets trouvés",
+                data: [res.records.length, recoveredItems.length],
+                backgroundColor: "rgba(255, 99, 132, 0.2)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1
+            }]
+        }, options: {
+            scales: {
                 y: {
                     beginAtZero: true
                 }
