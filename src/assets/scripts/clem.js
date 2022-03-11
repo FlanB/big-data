@@ -1,4 +1,4 @@
-let data = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=10000&sort=gc_obo_type_c&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_type_c&facet=gc_obo_nature_c"
+let data = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=10000&sort=date&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_type_c&facet=gc_obo_nature_c"
 
 const ctx = document.getElementById("myChart").getContext("2d")
 const ctx2 = document.getElementById("myChart2").getContext("2d")
@@ -8,7 +8,6 @@ fetch(data).then(res => res.json()).then(res => {
     let zoom = false
     let labels = res.facet_groups[1].facets.map(item => item.name)
     let data = res.facet_groups[1].facets.map(item => item.count)
-    let natureLabels = res.facet_groups[2].facets.map(item => item.name)
     let natureData = res.facet_groups[2].facets.map(item => item.count)
     let recoveredItems = res.records.filter(item => item.fields.gc_obo_date_heure_restitution_c != null)
 
@@ -24,20 +23,23 @@ fetch(data).then(res => res.json()).then(res => {
         }, options: {
             onClick: (e, index) => {
                 if (index.length) {
+                    index = index[0].index
                     if (zoom) {
                         chart.data.labels = labels
                         chart.data.datasets[0].data = data
                         chart.update()
                     } else {
-                        chart.data.labels = natureLabels
-                        chart.data.datasets[0].data = natureData
+                        const registrable = chart.data.labels
+                        chart.data.labels = []
+                        res.records.filter(item => item.fields.gc_obo_type_c === registrable[index])
+                            .forEach(item => {
+                                chart.data.labels = [...chart.data.labels, item.fields.gc_obo_nature_c]
+                                chart.data.datasets[0].data = natureData
+                            })
+                        chart.data.labels = [...new Set(chart.data.labels)]
+                        chart.data.datasets[0].data = chart.data.labels.map(label => res.facet_groups[2].facets.filter(item => item.name === label)[0]?.count)
                         chart.update()
                     }
-                    index = index[0].index
-                    res.records.forEach(item => {
-                        if (item.fields.gc_obo_type_c === res.facet_groups[1].facets[index].name) {
-                        }
-                    })
                     zoom = !zoom
                 }
             }, scales: {
