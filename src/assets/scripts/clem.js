@@ -47,7 +47,10 @@ fetch(data).then(res => res.json()).then(res => {
                         //supprimer les doublons
                         chart.data.labels = [...new Set(chart.data.labels)]
                         // associer les données aux labels
-                        chart.data.datasets[0].data = chart.data.labels.map(label => res.facet_groups[2].facets.filter(item => item.name === label)[0]?.count)
+                        chart.data.datasets[0].data = chart.data.labels.map(label => {
+                            return res.facet_groups[2].facets.filter(item => item.name === label)[0] ? res.facet_groups[2].facets.filter(item => item.name === label)[0]?.count : 0
+
+                        })
                         chart.update()
                     }
                     zoom = !zoom
@@ -60,20 +63,15 @@ fetch(data).then(res => res.json()).then(res => {
         }
     })
     new Chart(ctx2, {
-        type: "bar", data: {
-            labels: ["Objets perdus", "Objets retrouvés"], datasets: [{
-                label: "Nombre d'objets trouvés",
-                data: [res.records.length, recoveredItems.length],
-                backgroundColor: "rgba(255, 99, 132, 0.2)",
-                borderColor: "rgba(255, 99, 132, 1)",
+        type: "doughnut", data: {
+            labels: ["Objets perdus (%)", "Objets retrouvés (%)"], datasets: [{
+                label: "Nombre d'objets trouvés (en %)",
+                data: [(res.records.length - recoveredItems.length) * 100 / res.records.length, recoveredItems.length * 100 / res.records.length],
+                backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
+                borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
                 borderWidth: 1
             }]
-        }, options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
+
         }
     })
 })
