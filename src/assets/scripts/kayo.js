@@ -30,7 +30,7 @@ function DrawChart()
   };
 
   const chart = new Chart(ctx, {
-    type: "bar",
+    type: "pie",
     data: set,
   });
 }
@@ -56,12 +56,11 @@ fetch(
 
 function Next()
 {
-    const endpoint = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=10&sort=date&facet=gc_obo_gare_origine_r_name&refine.date=" + year + "&exclude.count=0";
+  const endpoint = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=10&sort=date&facet=gc_obo_gare_origine_r_name&refine.date=" + year + "&exclude.count=0";
     
-    fetch(endpoint).then(response => response.text())
-    .then(raw => {
-        const data = JSON.parse(raw);
-        console.log(data);
+  fetch(endpoint).then(response => response.text())
+  .then(raw => {
+      const data = JSON.parse(raw);
 
       data.facet_groups["0"].facets.forEach((set) => {
         frequentation_gares.forEach((entry) => {
@@ -75,6 +74,8 @@ function Next()
             }
           }
         });
-        DrawChart();
-    });
+      });
+      
+      DrawChart();
+  });
 }
