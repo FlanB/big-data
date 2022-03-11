@@ -1,10 +1,24 @@
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
-import json from "../objets-trouves-restitution-nicolas.json";
+import json from "../data/objets-trouves-restitution-nicolas.json";
 import randomColor from "./utils/randomColor";
 
+const getLabels = () => {
+  let labels = []; // Récupérer les années pour les mettre en abscisses sur le chart
+  fetch(
+    "https://data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&lang=fr&rows=2000&sort=gc_obo_type_c&facet=date&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_gare_origine_r_name&facet=gc_obo_nature_c&facet=gc_obo_type_c&facet=gc_obo_nom_recordtype_sc_c&refine.gc_obo_gare_origine_r_name=Agen"
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      data.facet_groups[0].facets.map((item) => {
+        labels.push(item.name);
+      });
+    });
+  return labels;
+};
+
 /* format des données souhaité :
-  data = [
+  data = [{
     object: "Pièces d'identités et papiers personnels",
     count: {
       2014: 120,
@@ -16,7 +30,7 @@ import randomColor from "./utils/randomColor";
 */
 
 const getData = () => {
-  // initie data avec 1 élément pour lancer la boucle foreach après
+  // initie data avec 1 élément pour lancer la boucle foreach
   let data = [
     {
       object: "Pièces d'identités et papiers personnels",
@@ -52,23 +66,9 @@ const getData = () => {
   return data;
 };
 
-const data = getData();
-
-const getLabels = () => {
-  let labels = []; // Les années
-  fetch(
-    "https://data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&lang=fr&rows=2000&sort=gc_obo_type_c&facet=date&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_gare_origine_r_name&facet=gc_obo_nature_c&facet=gc_obo_type_c&facet=gc_obo_nom_recordtype_sc_c&refine.gc_obo_gare_origine_r_name=Agen"
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      data.facet_groups[0].facets.map((item) => {
-        labels.push(item.name);
-      });
-    });
-  return labels;
-};
-
-const labels = await getLabels();
+const labels = getLabels();
+const data = await getData();
+console.log(data);
 
 const datasets = {
   labels: labels,
@@ -82,15 +82,42 @@ const datasets = {
   }),
 };
 
-const chartParams = {
-  type: "line",
-  data: datasets,
+const createChart = (data, type) => {
+  const chartContainer = document.getElementById("chart");
+  const ctx = document.createElement("canvas");
+  ctx.id = "myChart";
+  ctx.getContext("2d");
+  chartContainer.appendChild(ctx);
+  console.log(chartContainer);
+  const MyChart = new Chart(ctx, {
+    type: type,
+    data: data,
+  });
+  return MyChart;
 };
 
-const ctx = document.getElementById("myChart").getContext("2d");
-const myChart = new Chart(ctx, chartParams);
+const MyChart = createChart(datasets, "line");
+
+const removeChart = () => {
+  const chart = document.getElementById("myChart");
+  const chartContainer = document.getElementById("chart");
+  chartContainer.removeChild(chart);
+};
+
+const changeChartBtn = document.getElementById("change-chart");
+
+function changeChart(chartSelect) {
+  console.log(chartSelect.value);
+  removeChart();
+  createChart(datasets, chartSelect.value);
+}
+
+changeChartBtn.addEventListener("click", () => {
+  const chartSelect = document.getElementById("charts-select");
+  changeChart(chartSelect);
+});
 
 // Update le chart pour le faire apparaître une fois que les données sont récupérés
 setTimeout(function () {
-  myChart.update();
+  MyChart.update();
 }, 2000);
