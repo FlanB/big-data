@@ -1,16 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./assets/img/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./assets/styles/adel.scss" />
-    <link rel="stylesheet" href="./assets/styles/style.scss" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="./assets/img/favicon.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="./assets/styles/adel.scss"/>
+    <link rel="stylesheet" href="./assets/styles/style.scss"/>
     <title>Adel work</title>
-  </head>
-  <body>
-    <h1>This is adel page!</h1>
-    <svg id="data"></svg>
-    <script type="module" src="./assets/scripts/adel.js"></script>
-  </body>
+</head>
+<body>
+<h1 class="title">Quelle partie de la France perd le plus d'objets ?</h1>
+
+<form id="formStart">
+    <label>Sur combien de données souhaitez-vous établir un graphique ? (Pas plus de 500)</label><br>
+    <input class="nbQueries" type="number">
+    <input type="submit" value="Démarrer">
+</form>
+
+<p id="loading"></p>
+    <div class="container">
+        <div class="containercanvas">
+         <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+        <div id="article invisible">
+            <p class="title">La France divisée ? Qui sont les plus grandes têtes en l’air ?</p>
+            <p class="bodyArticle">Nous avons cette semaine travaillé sur les
+                <strong>opens datas</strong> de la SNCF, qui nous permet d’obtenir toutes
+                sortes d’informations chiffrées sur toutes les gares de France :
+                les états de fonctionnement des trains, les retards et ce qui a attiré
+                notre attention, les <strong>objets trouvés</strong>.</p>
+            <p class="bodyArticle">Des tendances à perdre davantage nos affaires au Nord ?</p>
+            <p class="bodyArticle">Nous avons produit un graphique, disponible ci-contre, qui nous donne
+                une réponse plutôt immédiate : le Nord de la France perd un nombre bien plus considérable
+                d’objets : sur un échantillon de 1000 objets trouvés par les agents de la SNCF, 724 sont
+                retrouvés dans les gares de la partie Nord de la France.<br><br>
+                Alors, qu’est-ce que cela veut dire ? Nous ne pouvons nous
+                hâter et immédiatement pointer du doigt les Nordistes. En effet,
+                un argument vient peser lourd dans notre balance : parmi les gares
+                du Nord sont comptées notamment les gares les plus fréquentées de France. À savoir
+                Paris Montparnasse, Gare de Lyon, Gare du Nord, etc. Il paraît alors évident que le nombre
+                d’objets perdus n’aura pas la même valeur, mais il faudrait alors le comparer en fonction
+                d’un taux rationnel entre l’affluence des différentes gares et leur nombre d’objets perdus.
+                Néanmoins, on préférera taquiner nos chers Parisiens et les accuser d’avoir bien trop la tête
+                en l’air !</p>
+            <p class="bodyArticle">Pour finir, nous nous devons de proposer une ouverture succincte.
+                Cette courte analyse vous ouvre la porte à cinq autres analyses que nous avons produites 
+                et que vous retrouverez ici : <a href="/">tous nos articles</a>.
+                Petite recommandation personnelle, je vous propose de découvrir cette analyse du nombre
+                d’objets perdus dans nos gares selon les années : <a href="/nico.html">Article de Nicolas MARSAN</a>.</p>
+        </div>
+    </div>
+<script type="module" src="./assets/scripts/adel.js"></script>
+</body>
 </html>

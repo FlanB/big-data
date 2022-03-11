@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les objets oubliés et la SNCF</title>
+    <link rel="stylesheet" href="./assets/styles/style.scss" />
+</head>
+<body>
+    <section id="regis">
+        <h1>Coût des services de déminages en 2019</h1>
+        <h2>Nombre de bagages abandonnés par mois</h2>
+        <div class="canvas-container"><canvas id="chart-regis-1"></canvas></div>
+        <h2>Estimation du coût des interventions de déminage : 300 - 1000 $ par intervention</h2>
+        <div class="canvas-container"><canvas id="chart-regis-2"></canvas></div>
+    </section>
+
+    <section id="gaby">
+        <h1>Quelles sont les périodes de l’années où la SNCF redonne le plus d’objets aux associations ?</h1>
+        <select name="cities" id="city-select-gaby">
+            <option value="Paris+Gare+de+Lyon">Paris Gare de Lyon</option>
+            <option value="Paris+Montparnasse">Paris Montparnasse</option>
+            <option value="Paris+Saint+Lazare">Paris Saint Lazare</option>
+            <option value="Paris+Gare+du+Nord">Paris Gare du Nord</option>
+            <option value="Paris+Gare+du+Nord">Paris Gare du Nord</option>
+            <option value="Bordeaux+Saint-Jean">Bordeaux Saint-Jean</option>
+            <option value="Rennes">Rennes</option>
+            <option value="Lille+Europe">Lille</option>
+            <option value="Starsbourg">Starsbourg</option>
+            <option value="Nantes">Nantes</option>
+        </select>
+        <select name="years" id="year-select-gaby">
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
+            <option value="2017">2017</option>
+        </select>
+        <button id="start-btn">Rechercher</button>
+        <div class="canvas-container" id="gaby-canvas-container"></div>
+    </section>
+
+    <section id="kayo">
+        <h1>En fonction de la gare (et de son affluence), combien d’objets sont perdus. Quelles sont les gares au plus fort taux de perte ?</h1>
+        <select name="years" id="year-select-kayo">
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
+            <option value="2017">2017</option>
+        </select>
+        <div class="canvas-container"><canvas id="chart-kayo"></canvas></div>
+    </section>
+
+    <script type="module" src="./assets/scripts/regis.js"></script>
+    <script type="module" src="./assets/scripts/gaby.js"></script>
+    <script type="module" src="./assets/scripts/kayo.js"></script>
+    <!-- <script type="module" src="./assets/scripts/adel.js"></script>
+    <script type="module" src="./assets/scripts/clem.js"></script>
+    <script type="module" src="./assets/scripts/nico.js"></script> -->
+</body>
+</html>
