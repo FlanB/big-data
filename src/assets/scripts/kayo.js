@@ -1,20 +1,19 @@
 import Chart from 'chart.js/auto';
 
-const year = document.getElementById("year-select").value;
+const year = document.getElementById("year-select-kayo").value;
 
 let final_entries = [];
 let frequentation_gares = [];
 
 function DrawChart()
 {
-    const ctx = document.getElementById("chart").getContext('2d');
+    const ctx = document.getElementById("chart-kayo").getContext('2d');
     
     let gares = [];
     let nb_objets_perdus = [];
     final_entries.forEach(entry => {
         gares.push(entry.nom_gare);
         nb_objets_perdus.push(entry.frequentation/entry.pertes_objets);
-
     });
 
     const set = {
@@ -53,11 +52,12 @@ fetch("https://ressources.data.sncf.com/api/records/1.0/search/?dataset=frequent
 
 function Next()
 {
-    console.log("Next");
-
-    fetch("https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=10&sort=date&facet=gc_obo_gare_origine_r_name&refine.date=" + year + "&exclude.count=0").then(response => response.text())
+    const endpoint = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=10&sort=date&facet=gc_obo_gare_origine_r_name&refine.date=" + year + "&exclude.count=0";
+    
+    fetch(endpoint).then(response => response.text())
     .then(raw => {
         const data = JSON.parse(raw);
+        console.log(data);
 
         data.facet_groups["0"].facets.forEach(set => {
             frequentation_gares.forEach(entry => {
@@ -73,8 +73,6 @@ function Next()
                 }
             });
         });
-
-        console.log(final_entries);
         DrawChart();
     });
 }
