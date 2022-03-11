@@ -1,167 +1,131 @@
-import * as d3 from "d3";
-import * as d3Scale from "d3-scale";
-import departements from "../data/departements.json";
+// On importe la librairie Chart.js
+import {Chart, registerables} from "chart.js";
 
-const data =
-  "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=200&facet=date";
-const geoloc =
-  "http://api.positionstack.com/v1/forward?access_key=01fee3c0e98cbce078e2d7d9556ee68a&query=";
+Chart.register(...registerables)
+
+// Ici, on procède au traitement du formulaire lors du chargement de la page
+// Lors du déclenchement du bouton 'submit', on passe en paramètres l'event pour l'utiliser et on déclenche une fonction
+document.querySelector('#formStart').addEventListener('submit', function(e) {
+   // On empêche que la page recharge lors du déclenchement de l'événement
+    e.preventDefault()
+
+    // On fait disparaître le formulaire pour faire apparaître l'article
+    document.querySelector('#formStart').style.display = 'none';
+    document.querySelector('.container').style.display = 'flex';
+
+    const queriesRequested = document.querySelector('.nbQueries').value;
+    // On passe en paramètres la valeur passée par l'utilisateur dans l'input
+    startGraph(queriesRequested)
+});
+
+// C'est une fonction asynchrone pour pouvoir gérer correctement l'arrivée des données et l'ordre d'exécution du code
+const startGraph = async (queries) =>
+{
+    const nbQueries = queries;
+
+    // On stocke les liens de requêtes pour les deux différentes API
+    const data =
+        "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=" + nbQueries + "&facet=date";
+    const geoloc =
+        "http://api.positionstack.com/v1/forward?access_key=01fee3c0e98cbce078e2d7d9556ee68a&query=";
 // const geoloc = "https://api-adresse.data.gouv.fr/search/?q=";
-/**
- * ce qu'il me faut:
- * data = [
- * north: {
- *     count: 100
- * },
- * south: {
- *     count: 300
- * }
- * ]
- */
 
-const getSncfData = async () => {
-  let allCities = [];
-  await fetch(data)
-    .then((res) => res.json())
-    .then((data) =>
-      data.records.forEach((item) => {
-        allCities.push(item.fields.gc_obo_gare_origine_r_name);
-      })
-    );
-  return allCities;
-};
+    /**
+     * Modèle de ce qu'il me faut:
+     * data = [
+     * north: {
+     *     count: 100
+     * },
+     * south: {
+     *     count: 300
+     * }
+     * ]
+     */
 
-// const dataSncf = getSncfData();
-// console.log(dataSncf);
+    // Dans cette fonction, on va faire une requête à l'API de SNCF pour nous retourner les data dont nous avons besoin
+    const getSncfData = async () => {
+        let allCities = [];
+        await fetch(data)
+            .then((res) => res.json())
+            .then((data) =>
+                // On boucle dans chacun des 'records' pour obtenir chaque nom de ville stockées dans le tableau allCities
+                data.records.forEach((item) => {
+                    allCities.push(item.fields.gc_obo_gare_origine_r_name);
+                })
+            );
+        // On retourne toutes les villes obtenues
+        return allCities;
+    };
 
-const getGeolocData = async () => {
-  let geolocData = {
-    north: 0,
-    south: 0,
-  };
-  const dataSncf = await getSncfData();
-  //   dataSncf.map((item) => {
-  //     console.log(item, " item");
-  //   });
-  //   console.log(dataSncf, " data");
-  let i = 0;
-  do {
-    i++;
-    // let request = await fetch(geoloc + dataSncf[i]);
-    // let response = await request.json();
-    // console.log(response);
-    // let data = await response.then((data) => data);
-    await fetch(geoloc + dataSncf[i])
-      .then((res) => res.json())
-      .then((data) => {
-        data.data[0].latitude < 46.3
-          ? (geolocData.south += 1)
-          : (geolocData.north += 1);
-        console.log(data);
-      });
-    console.log(data);
-    console.log("end await");
-  } while (i < dataSncf.length);
-  console.log(geolocData);
-  return geolocData;
-};
+    const getGeolocData = async () => {
+        // On établie le modèle de l'objet qu'on utilisera plus tard
+        let geolocData = {
+            north: 0,
+            south: 0,
+        };
 
-getGeolocData();
-// let cityInfos = {}
-// let i = 0;
-// let cityNorth = {}
-// let citySouth = {}
-// let queue = []
+        // On récupère toutes les villes obtenues. Grâce au 'async', on passera à la suite après avoir terminé
+        const dataSncf = await getSncfData();
 
-// const getFilteredData = async () =>
-// {
+        let i = 0;
+        // On utilise une boucle do while pour exécuter au moins une fois la boucle
+        do {
+            i++;
 
-//     const response = await fetch(data);
-//     const newData = await response.json();
-//     return newData;
-//     // newData.then((res) =>
-//     // {
-//     //
+            // Ici, grâce au nom de la ville, on fait une requête à l'API PositionStack pour
+            // obtenir les coordonnées (longitude, latitude) grâce au nom de la gare
+            await fetch(geoloc + dataSncf[i])
+                .then((res) => res.json())
+                .then((data) => {
+                    // Condition ternaire pour incrémenter le compteur de chaque partie de la France
+                    data.data[0].latitude < 46.3
+                        ? (geolocData.south += 1)
+                        : (geolocData.north += 1);
+                    console.log(data);
+                });
 
-//     // return {cityNorth, citySouth};
-// }
+            // Gestion du chargement pour l'affichage utilisateur et l'informer de l'avancement du traitement
+            document.querySelector('#loading').textContent = 'Chargement : ' + i * Math.round((100/nbQueries)) + '%'
+            console.log("end await");
+        } while (i < dataSncf.length);
 
-// getFilteredData().then((res) =>
-// {
+        return geolocData;
+    };
 
-//     const getNewData = async () =>
-//     {
-//         const city = res.records.fields.gc_obo_gare_origine_r_name;
-//         const response = await fetch(geoloc + city + ',%20France')
-//         const newData = await response.json();
-//         return newData;
-//     }
+    // On récupère la data et on l'utilisera par la suite uniquement quand ce sera terminé
+    const finalData = await getGeolocData();
+    const ctx = document.getElementById('myChart').getContext('2d');
 
-//     getNewData().then(res => {
-//         console.log(res)
-//         // for (let i = 0; i < res.records.length ; i++)
-//         // {
-//         //         queue.push({
-//         //             cityName: res.data[0].name,
-//         //             longitude: res.data[0].longitude,
-//         //             latitude: res.data[0].latitude
-//         //         });
-//         // }
-//     })
+    // Initialisation et construction du graphe
+    const myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['north', 'south'],
+            datasets: [{
+                label: 'france',
+                data: [finalData.north, finalData.south],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
 
-//     filterData();
+        }
+    });
 
-// })
+    // Lorsque tout a été établi, on retire l'affichage du chargement
+    document.querySelector('#loading').style.display = 'none';
+    console.log(finalData);
+}
 
-// const filterData = () =>
-// {
-//     console.log(queue)
-// }
 
-// res.records.forEach((item) =>
-// {
-//
-//         if (cityInfos[i].latitude > 46.3)
-//         {
-//             cityNorth[i] = cityInfos[i]
-//             console.log(cityNorth)
-//
-//         }
-//         //South
-//         else
-//         {
-//             citySouth[i] = cityInfos[i]
-//             console.log(citySouth)
-//
-//         }
-//         i++
-//
-//     }).catch(err => console.log(err));
-//
-// })
 
-//
-//
-// const xScale = d3.scaleBand()
-//     .domain(labels)
-//     .rangeRound([0, 250])
-//     .padding(0.1);
-//
-// const yScale = d3.scaleLinear()
-//     .domain([0, 15])
-//     .range([200, 0]);
-//
-// const container = d3.select('#data')
-//     .classed('container', true);
-//
-// const bars = container
-//     .selectAll('.bar')
-//     .data(labels)
-//     .enter()
-//     .append('rect')
-//     .classed('bar', true)
-//     .attr('width', xScale.bandwidth())
-//     .attr('height', (data) => 200 - yScale(data.value))
-//     .attr('x', data => xScale(data.region))
-//     .attr('y', data => yScale(data.value));
-//
+

@@ -1,9 +1,50 @@
-.container {
-  width: 250px;
-  height: 200px;
-  border: 1px solid #727272
+.title {
+  text-align: center;
+  margin: 20px 0;
 }
 
-.bar {
-  fill: #727272;
+p {
+  text-align: center;
+  margin-bottom: 20px;
 }
+
+.invisible {
+  opacity: 0;
+}
+
+.visible {
+  opacity: 1;
+  transition: all 1s ease-in-out;
+}
+
+.container {
+  display: none;
+  justify-content: space-around;
+
+  #article {
+    margin-right: 20vw;
+    text-align: center;
+    opacity: 0.5;
+  }
+
+}
+
+#formStart {
+  text-align: center;
+  label {
+    display: block;
+  }
+}
+
+.bodyArticle {
+  margin-bottom: 25px;
+}
+
+.containercanvas {
+  margin: 0 60px;
+  width: 30vw;
+  height: 30vh;
+
+}
+
+
