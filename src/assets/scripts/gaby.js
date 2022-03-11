@@ -1,3 +1,5 @@
+import Chart from 'chart.js/auto';
+
 function DrawChart(data)
 {
     const ctx = document.getElementById("chart").getContext('2d');
