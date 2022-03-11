@@ -71,7 +71,7 @@ const getData = () => {
 
 const labels = getLabels();
 // récupère les années
-const data = await getData();
+const [data] = await Promise.all([getData()]);
 // récupère les data
 console.log(data);
 
@@ -102,8 +102,7 @@ const createChart = (data, type) => {
   });
   return MyChart;
 };
-
-const MyChart = await createChart(datasets, "line");
+const [MyChart] = await Promise.all([createChart(datasets, "line")]);
 
 const removeChart = () => {
   // enlève le graphique

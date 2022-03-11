@@ -85,7 +85,7 @@ const startGraph = async (queries) =>
                 });
 
             // Gestion du chargement pour l'affichage utilisateur et l'informer de l'avancement du traitement
-            document.querySelector('#loading').textContent = 'Chargement : ' + i * Math.round((100/nbQueries)) + '%'
+            document.querySelector('#loading').textContent = 'Chargement : ' + Math.round((i * 100)/nbQueries) + '%'
             console.log("end await");
         } while (i < dataSncf.length);
 

@@ -5,15 +5,30 @@
   <link href="./assets/img/favicon.svg" rel="icon" type="image/svg+xml"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <link href="./assets/styles/style.scss" rel="stylesheet"/>
-  <link rel="stylesheet" href="./assets/styles/clem.scss">
+  <link href="./assets/styles/clem.scss" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>Vite App</title>
 </head>
 <body>
-<div class="chartContainer">
-  <canvas id="myChart" width="400" height="400"></canvas>
+<h1>Quels types d'objets sont perdus ?</h1>
+<p>Quels sont les objets qui sont le plus égaré ? Perds ton plus un téléphone qu’une bague ? D’après le graphique, ce
+  sont
+  les bagages qui sont les plus égarés dans les gares SNCF. Parmi ces bagages, le diagramme nous montre que ce sont les
+  sacs à dos qui sont le plus perdu, probablement parce qu’ils se déplacent avec leur propriétaire. Sans étonnement, ce
+  sont ensuite les valises qui sont ils sont suivis par les appareils électroniques et les vêtements, respectivement.
+
+  Le second graphique nous démontre qu’environ 40 % des objets dans les gares SNCF retrouve leur propriétaire. Ce qui
+  fait
+  moins de la moitié des objets qui sont retrouvés. Une grande perte pour les voyageurs.</p>
+<div class="clem-charts">
+  <div class="chartContainer">
+    <canvas height="400" id="myChart" width="400"></canvas>
+  </div>
+  <h2>Combien de pourcents d'objets perdus sont retrouvés ?</h2>
+  <div class="chartContainer">
+    <canvas height="400" id="myChart2" width="400"></canvas>
+  </div>
 </div>
-<canvas id="myChart2" width="400" height="400"></canvas>
 <script src="./assets/scripts/clem.js" type="module"></script>
 </body>
 </html>

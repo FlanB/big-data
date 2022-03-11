@@ -16,7 +16,7 @@ fetch(data).then(res => res.json()).then(res => {
     const chart = new Chart(ctx, {
         type: "bar", data: {
             labels: labels, datasets: [{
-                label: "Nombre d'objets trouvés",
+                label: "Nombre d'objets perdus selon le type et la nature",
                 data: data,
                 backgroundColor: "rgba(255, 99, 132, 0.2)",
                 borderColor: "rgba(255, 99, 132, 1)",
