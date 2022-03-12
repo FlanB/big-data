@@ -8,3 +8,9 @@ body {
   display: block;
   width: 70%;
 }
+
+.links-container {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
