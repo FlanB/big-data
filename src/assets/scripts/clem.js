@@ -1,4 +1,4 @@
-let data = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=10000&sort=date&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_type_c&facet=gc_obo_nature_c"
+let data = "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=objets-trouves-restitution&q=&rows=1000&sort=date&facet=gc_obo_date_heure_restitution_c&facet=gc_obo_type_c&facet=gc_obo_nature_c"
 //créer les contextes pour les graphiques
 const ctx = document.getElementById("myChart").getContext("2d")
 const ctx2 = document.getElementById("myChart2").getContext("2d")
