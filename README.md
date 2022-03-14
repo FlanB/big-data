@@ -1,4 +1,4 @@
-# vite
+# A student big data project
 Install dependencies:
 ```
 npm install
